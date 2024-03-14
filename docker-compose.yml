@@ -1,0 +1,20 @@
+version: "3"
+services:
+  mt-db:
+    image: postgres
+    env_file:
+      - .env
+    ports:
+      - "${PORT_MT_DB}:5432"
+    volumes:
+      - "${DATA_VOL_MT_DB}:/opt/apps/postgresql/data"
+      - "${INIT_VOL_MT_DB}:/docker-entrypoint-initdb.d"
+
+  mt-app:
+    build: .
+    ports:
+      - "${PORT_MT_APP}:3000"
+    depends_on:
+      - mt-db
+    profiles:
+      - development.docker
