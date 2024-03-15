@@ -64,14 +64,10 @@ export class TransactionService {
         transactionDto: TransactionDto,
         transactionType: TransactionType
     ): Promise<void> {
-        if (
-            parseFloat(account.balance.toString()) - parseFloat(transactionDto.amount.toString()) <
-            0
-        ) {
+        if (account.balance - transactionDto.amount < 0) {
             throw new Error('Not enough money');
         }
-        account.balance =
-            parseFloat(account.balance.toString()) - parseFloat(transactionDto.amount.toString());
+        account.balance = account.balance - transactionDto.amount;
         transactionDto.type = transactionType;
         await this.changeAccountBalance(transactionalEntityManager, account, transactionDto);
     }
@@ -82,8 +78,7 @@ export class TransactionService {
         transactionDto: TransactionDto,
         transactionType: TransactionType
     ): Promise<void> {
-        account.balance =
-            parseFloat(account.balance.toString()) + parseFloat(transactionDto.amount.toString());
+        account.balance = account.balance + transactionDto.amount;
         transactionDto.type = transactionType;
         await this.changeAccountBalance(transactionalEntityManager, account, transactionDto);
     }

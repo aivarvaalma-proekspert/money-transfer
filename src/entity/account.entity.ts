@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transaction } from './transaction.entity';
+import { Transaction, DecimalColumnTransformer } from './transaction.entity';
 
 @Entity()
 export class Account {
@@ -17,7 +17,13 @@ export class Account {
     owner: string;
 
     @ApiProperty()
-    @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+    @Column({
+        type: 'decimal',
+        precision: 12,
+        scale: 2,
+        default: 0,
+        transformer: new DecimalColumnTransformer()
+    })
     balance: number;
 
     @OneToMany(() => Transaction, (transaction) => transaction.account)

@@ -31,8 +31,9 @@ ENV NODE_ENV .development.docker
 USER node
 
 # Copy only the necessary files
-COPY --chown=node:node --from=build /app/.env* ./
+COPY --chown=node:node --from=build /app/.env.development.docker ./
 COPY --chown=node:node --from=build /app/dist ./dist
+# Could be further optimized to leave out dev-dependencies from runtime
 COPY --chown=node:node --from=build /app/node_modules ./node_modules
 
 # Expose the port on which the app will run on

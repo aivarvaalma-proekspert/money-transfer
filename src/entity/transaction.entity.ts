@@ -9,6 +9,15 @@ export enum TransactionType {
     RECEIVE = 'receive'
 }
 
+export class DecimalColumnTransformer {
+    to(data: number): number {
+        return data;
+    }
+    from(data: string): number {
+        return parseFloat(data);
+    }
+}
+
 @Entity()
 export class Transaction {
     @ApiProperty()
@@ -23,7 +32,13 @@ export class Transaction {
     })
     transactionType: TransactionType;
 
-    @Column({ type: 'decimal', precision: 12, scale: 2, default: 0 })
+    @Column({
+        type: 'decimal',
+        precision: 12,
+        scale: 2,
+        default: 0,
+        transformer: new DecimalColumnTransformer()
+    })
     amount: number;
 
     @CreateDateColumn({
